@@ -1,0 +1,142 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <audio id="type-sound" src="./type-sound.wav" preload="auto"></audio>
+
+    <title>2^1024 Loops</title>
+
+    <link rel="stylesheet" href="stylesheets/style.css">
+
+    <script src="javascripts/modules/lodash.js"></script>
+    <script src="javascripts/modules/break_eternity.js"></script>
+
+    <script src="javascripts/modules/vue.global.js"></script>
+    <script src="javascripts/vue.js"></script>
+
+    <script src="javascripts/modules/operators.js"></script>
+    <script src="javascripts/modules/achievements.js"></script>
+    
+    <script src="javascripts/rewards.js"></script>
+    <script src="javascripts/main.js"></script>
+</head>
+<body onload="GameLoad()">
+    <div id="app" style="display: none;">
+        <div class="o-source" :class="{running: player.playing}" :style="{'pointer-events': player.popup.enabled || player.completed ? 'none' : 'all'}">
+            <div class="o-topbar">
+                <button class="o-play-button" :class="{running: player.running}" onclick="runCode()"><span v-if="player.running">加速</span><span v-else>运行</span></button>
+                <button class="o-store-button" :class="{storing: player.storing}" onclick="switchStore()"><span v-if="player.storing">存储中</span><span v-else>存储</span></button>
+                <!-- <button>Run</button> P = {{ player.variables.P }} / {{ player.nextP }} -->
+                <div class="o-progress-bar">
+                    <div class="o-bar" :style="{width: player.variables.P.div(player.nextP).min(1) * 100 + '%'}"></div>
+                    <div class="o-progress-percent">P = <span v-html="format(player.variables.P)"></span> / <span v-html="format(player.nextP)"></span></div>
+                </div>
+                <button class="o-mute-button" :class="{muted: player.mute}" onclick="player.mute = !player.mute"></button>
+                <button class="o-give-up-button" onclick="giveUp()">放弃？</button>
+            </div><div class="o-code" :class="{choosed: Operator.checkInsert()}">
+                <div v-for="(o,k) in player.code">
+                    <operator :data="o" :index="k" class="o-code-operator" ></operator>
+                    <div class="o-code-line">{{ k+1 }}</div>
+
+                    <div class="o-code-insert" @click="Operator.insertCode(k,player.choosed_slot ?? player.stored[player.choosed_store]?.node ?? null)">+</div>
+                    <!-- <div class="o-code-insert-last" v-if="k+1 === player.code.length" @click="Operator.insertCode(k+1,player.choosed_slot)">+</div> -->
+
+                    <div class="o-code-remove" v-if="!player.running && !o.persist" @click="Operator.clearCode(k)">-</div>
+                </div>
+            </div><div class="o-slots">
+                <div v-for="[s, k] in player.slots" class="o-slot-div" :class="{choosed: equalAll(s,player.choosed_slot)}" @click="chooseInventorySlot(s)">
+                    <div class="o-slot-amount">x{{ k }}</div>
+                    <div class="o-display-slot">
+                        <o-slot :data="{slot: s}" ></o-slot>
+                    </div>
+                    <div class="o-slot-description" v-html="s.description"></div>
+                </div><div v-for="(s, i) in player.stored" class="o-slot-div" :class="{choosed: player.choosed_store === i}" @click="chooseStoredSlot(i)">
+                    <div class="o-slot-amount">已存储</div>
+                    <div class="o-display-slot">
+                        <o-slot :data="{slot: s.base}" ></o-slot>
+                    </div>
+                    <div class="o-slot-description">存储的语句。</div>
+                </div>
+            </div><div class="o-information">
+                <div class="o-variables" v-if="player.running">
+                    <div v-for="n in 'abcdef'"><span v-if="player.new_variables.has(n)">{{ n }} = <span v-html='format(player.variables[n] ?? 0)'></span></span></div>
+                </div><div v-else v-html="player.msg"></div>
+                <img id="face" src="./textures/face0.png">
+            </div>
+        </div>
+
+        <div class="o-main-menu" :class="{running: player.playing}" :style="{'pointer-events': player.popup.enabled || player.completed ? 'none' : 'all'}">
+            <div class="o-title">
+                <div>2<sup>1024</sup> Loops</div>
+                <div style="font-size: 2vmin;">原作者 MrRedShark77 - GMTK 2025 参赛作品 <button onclick="createComponentPopup('about')">关于</button></div>
+            </div>
+            <div class="o-menu-buttons">
+                <button class="o-mute-button" :class="{muted: player.mute}" onclick="player.mute = !player.mute"></button>
+                <button class="o-start-button" onclick="startGame()"></button>
+                <button class="o-achievement-button" onclick="createComponentPopup('achievements')"></button>
+            </div>
+            <button class="o-tutorial-button" onclick="player.tutorial = !player.tutorial">教程关 <b v-if="player.tutorial" style="color: green;">已启用</b><b v-else style="color: red;">已禁用</b></button>
+        </div>
+
+        <div class="o-popups" v-if="player.popup.enabled || player.completed">
+            <div v-if="player.completed">
+                选择 3 项奖励！
+                <div><b>普通 75%</b> | <b>少见 18.7%</b> | <b>稀有 5.3%</b> | <b>史诗 0.67%</b> | <b>传奇 0.33%</b></div>
+                <div class="o-rewards-grid">
+                    <div v-for="([s, k, r], i) in player.rewards" class="o-slot-div" :class="{choosed: player.choosedRewards.has(i)}" :style="{'--primary-color': REWARD_RARITIES[r][1]}" @click="chooseReward(i)">
+                        <div class="o-slot-amount">{{ REWARD_RARITIES[r][0] }} x{{ k }}</div>
+                        <div class="o-display-slot">
+                            <o-slot :data="{slot: s}" ></o-slot>
+                        </div>
+                        <div class="o-slot-description" v-html="s.description"></div>
+                    </div>
+                </div>
+                <i style="font-size: 12px;">如果你选择不存在的变量，系统将给出一些初始语句和随机常量。</i>
+                <div>
+                    <button onclick="claimRewards()">收集奖励/跳过</button>
+                    <button :class="{locked: player.reroll <= 0}" onclick="rerollRewards()">重掷（剩余 {{ player.reroll }} 次）</button>
+                </div>
+            </div><div v-else>
+                <div v-if="player.popup.component">
+                    <div v-if="player.popup.component === 'achievements'">
+                        你已解锁 {{ player.achievements.reduce((a,b) => a + b, 0) }} / {{ TOTAL_ACHIEVEMENTS }} 个成就！
+                        <div class="o-achievements">
+                            <div v-for="[i,a] in ACH_ORDER.map(x => [x,ACHIEVEMENTS[x]])" class="o-achievement-div" :class="{[['','unlocked','golden','platinum'][player.achievements[i]]]: true}" @click="test(i)">
+                                <img :src="!a.type || player.achievements[i] ? `textures/achievement${i}.png` : `textures/achievement_hidden.png`">
+                                <div class="o-achievement-title" v-html="!a.type || player.achievements[i] ? a.title : '???'"></div>
+                                <div class="o-achievement-description" v-html="a.description[Math.max(player.achievements[i]-1+a.type,0)]"></div>
+                            </div>
+                        </div>
+                    </div><div v-if="player.popup.component === 'tutorial1'">
+                        <div>恭喜！你已经通过了教程关，接下来你可以继续编写代码并更好地改进它。此外，还有一个额外的教程：</div>
+                        <img src="textures/help.png">
+                        <div><i>如果行太长，超出代码区宽度，你需要进行水平滚动。键鼠：Shift+滚轮；触屏：左右滑动；触摸板：双指滑动。</i></div>
+                    </div><div v-if="player.popup.component === 'tutorial2'">
+                        这是“存储”按钮，用于切换存储模式，你可以在其中选择操作符进行存储！<i>这个功能仍在开发中，请自行承担使用风险。</i>
+                        <img src="textures/help2.png">
+                        <div>对于每个目标，当你完成后，都可以从6项奖励中选择3项，并且各等级的奖励有不同的概率。别担心，教程的奖励在关闭这个窗口后就会出现！你需要达到 P = 2<sup>1024</sup> (1.798x10<sup>308</sup>)，并完成成就。祝你好运！</div>
+                    </div><div v-if="player.popup.component === 'about'">
+                        <h2>关于</h2>
+                        <div>基于 MrRedShark77 的 <a href="https://github.com/MrRedShark77/loop-jam">loop-jam 仓库</a>改编（有能力请支持原作者）</div>
+                        <div>汉化制作不易，<a href="https://space.bilibili.com/3493138995874499">支持作者</a>。汉化文本按 CC BY-NC-SA 4.0 授权，<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">协议文本</a></div>
+                        <hr>
+                        <div><b>鸣谢列表</b> | Lodash.js (<a href="https://github.com/lodash/lodash/blob/main/LICENSE">License</a>) | Vue.js (<a href="https://github.com/vuejs/vue/blob/main/LICENSE">License</a>) | Noto Sans SC (<a href="https://github.com/notofonts/noto-fonts/blob/main/LICENSE">License</a>) | Google Sans Code (<a href="https://github.com/googlefonts/googlesans-code/blob/main/OFL.txte">License</a>) | Roboto Mono (<a href="https://github.com/googlefonts/RobotoMono/blob/main/OFL.txt">License</a>)</div>
+                    </div>
+                </div><div v-else v-html="player.popup.msg"></div>
+                <div style="margin-top: 10px;"><button v-for="([b],i) in player.popup.buttons" v-html="b" @click="actionPopup(i)"></button></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="achievement-popups">
+        <!--
+        <div class="o-achievement-div">
+            <img src="textures/achievement0.png">
+            <div class="o-achievement-title">Achievement Unlocked: Thanks for Playing!</div>
+            <div class="o-achievement-description">Placeholder</div>
+        </div>
+        -->
+    </div>
+</body>
+</html>

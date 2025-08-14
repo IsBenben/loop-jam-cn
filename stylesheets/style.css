@@ -1,0 +1,611 @@
+@font-face {
+    font-family: RobotoMono;
+    src: url(RobotoMono-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: GoogleSansCode;
+    src: url(GoogleSansCode-VariableFont_wght.ttf);
+}
+
+
+@font-face {
+    font-family: 'Noto Sans SC';
+    src: url(NOTOSANSSC-VF.TTF);
+}
+
+:root {
+    user-select: none;
+}
+
+* {
+    font-family: GoogleSansCode, 'Noto Sans SC', sans-serif;
+}
+
+body {
+    overflow: hidden;
+    margin: 5px;
+    background: #444;
+}
+
+.o-operator {
+    display: flex;
+    justify-content: left;
+    flex-wrap: row wrap;
+
+    align-items: center;
+}
+.o-operator img {
+    width: 30px;
+}
+.o-operator > div {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.o-code-operator, .o-slot, .o-slot-div, button {
+    --primary-color: #888;
+
+    border: none;
+    background: var(--primary-color);
+    box-shadow: 1px 1px 0px color-mix(in srgb, var(--primary-color) 30%, black 70%),
+                2px 2px 0px color-mix(in srgb, var(--primary-color) 30%, black 70%),
+                3px 3px 0px color-mix(in srgb, var(--primary-color) 30%, black 70%),
+                4px 4px 0px color-mix(in srgb, var(--primary-color) 30%, black 70%),
+                5px 5px 0px color-mix(in srgb, var(--primary-color) 30%, black 70%),
+                6px 6px 0px color-mix(in srgb, var(--primary-color) 30%, black 70%),
+    inset 0px 0px 0px 1px color-mix(in srgb, var(--primary-color) 40%, black 60%);
+
+    margin: 2px;
+}
+
+button {
+    --primary-color: white;
+    padding: 2px 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+button.locked {
+    --primary-color: gray;
+    cursor: default;
+}
+
+h1,h2,h3,h4 {
+    margin: 0px;
+}
+
+/*
+*::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background-color: #444;
+}
+
+*::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #888;
+}
+*/
+
+.o-slot {
+    min-width: 30px;
+    min-height: 30px;
+    padding: 3px;
+    margin: 0px 6px 6px 0px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+}
+
+.o-slot.choosed:not(.o-display-slot .o-slot),
+.o-slot-div.choosed:not(.o-rewards-grid .o-slot-div) {
+    background: color-mix(in srgb, var(--primary-color) 70%, green 30%);
+    cursor: pointer;
+}
+.o-slot:not(.choosed) {
+    cursor: default;
+}
+.o-rewards-grid .o-slot-div.choosed::after {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
+    background: #0008;
+    background-image: url("../textures/checkmark.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    content: '';
+}
+
+.o-source {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50px 1fr 150px;
+    height: 100%;
+    gap: 10px;
+}
+.o-source > div {
+    padding: 5px;
+    background: #888;
+    transition: transform 2s;
+}
+
+.o-code {
+    position: relative;
+    overflow: auto;
+    padding: 30px 5px 30px 60px !important;
+    
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    align-items: start;
+    gap: 4px;
+}
+.o-code-operator {
+    padding: 3px;
+    margin-right: 50px;
+    --primary-color: white;
+}
+.o-code > div {
+    position: relative;
+    width: max-content;
+}
+.o-code-line {
+    position: absolute;
+    top: 50%;
+    right: calc(100% + 15px);
+    text-align: right;
+    transform: translateY(-50%);
+    font-weight: bold;
+    opacity: 0.75;
+}
+
+/*
+.o-code::after {
+    position: absolute;
+    top: 5px;
+    bottom: 20px;
+    left: 50px;
+    content: "";
+
+    border-image-source: url(../textures/loop.png);
+    border-image-slice: 30 30 30 30 fill;
+    border-image-width: 30px;
+    border-image-repeat: stretch;
+    width: 60px;
+
+    clip-path: polygon(0px 0px, 30px 0px, 30px 100%, 0px 100%);
+    pointer-events: none;
+    opacity: 0.5;
+}
+*/
+
+.o-code-insert:not(.choosed .o-code-insert),
+.o-code-insert-last:not(.choosed .o-code-insert-last) {
+    display: none;
+}
+.o-code-insert {
+    position: absolute;
+    bottom: 100%;
+    right: calc(100% + 10px);
+    width: 30px;
+    padding-right: 10px;
+    text-align: center;
+
+    background: #222;
+    color: white;
+    font-size: 24px;
+
+    transform: translateY(50%);
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    cursor: pointer;
+}
+.o-code-insert-last {
+    position: absolute;
+    top: 100%;
+    right: calc(100% + 10px);
+    width: 30px;
+    padding-right: 10px;
+    text-align: center;
+
+    background: #222;
+    color: white;
+    font-size: 24px;
+
+    transform: translateY(-50%);
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    cursor: pointer;
+}
+.o-code-remove {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    width: 30px;
+    padding-left: 10px;
+    text-align: center;
+
+    background: #222;
+    color: white;
+    font-size: 24px;
+
+    transform: translateY(-50%);
+    clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
+    cursor: pointer;
+}
+
+.o-slots {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    display: grid;
+    justify-content: left;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: min-content;
+
+    padding: 5px;
+}
+
+.o-slot-div {
+    --primary-color: white;
+
+    position: relative;
+
+    min-height: 130px;
+    padding: 12px 3px 3px 3px;
+
+    text-align: center;
+
+    cursor: pointer;
+}
+.o-slot-div * {
+    pointer-events: none;
+}
+.o-slot-div:not(:active):hover,
+button:not(.locked, :active):hover {
+    transform: scale(1.02);
+}
+
+.o-display-slot {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+}
+
+.o-slot-description {
+    font-size: 12px;
+}
+
+.o-slot-amount {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+.o-popups {
+    pointer-events: all;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100% - 100px);
+    max-height: calc(100% - 100px);
+    border: solid 2px black;
+
+    text-align: center;
+    background: white;
+
+    padding: 10px;
+}
+
+.o-rewards-grid {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(3, 300px);
+    grid-auto-rows: min-content;
+    margin: 10px;
+}
+
+.o-topbar {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+
+    padding: 2px !important;
+    display: grid;
+    grid-template-columns: 90px 120px 1fr 46px 90px;
+    gap: 2px;
+}
+.o-topbar button {
+    box-shadow: none;
+    border-radius: 10px;
+}
+
+.o-play-button {
+    position: relative;
+    --primary-color: lime;
+    padding-left: 30px;
+}
+.o-play-button::after {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    transform: translateY(-50%);
+    background-image: url(../textures/play.png);
+    background-size: contain;
+    content: "";
+}
+.o-play-button.running {
+    --primary-color: cyan;
+}
+
+.o-store-button {
+    position: relative;
+    --primary-color: white;
+    padding-left: 30px;
+}
+.o-store-button::after {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    transform: translateY(-50%);
+    background-image: url(../textures/store.png);
+    background-size: contain;
+    content: "";
+}
+.o-store-button.storing {
+    --primary-color: cyan;
+}
+
+.o-give-up-button {
+    --primary-color: coral;
+}
+
+.o-progress-bar {
+    position: relative;
+    overflow: hidden;
+    background: #222;
+
+    clip-path: polygon(23px 0px, calc(100% - 23px) 0px, calc(100% - 8px) 23px, calc(100% - 23px) 46px, 23px 46px, 8px 23px);
+}
+.o-bar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 50%;
+    height: 100%;
+
+    background: limegreen;
+    transition: width 1s;
+}
+.o-progress-percent {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    width: calc(100% - 60px);
+    text-align: center;
+    transform: translateY(-50%);
+
+    color: white;
+    text-shadow: 0px 0px 1px black, 0px 0px 2px black, 1px 1px 1px black, -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black;
+}
+
+.o-information {
+    position: relative;
+
+    grid-row: 3 / 4;
+    grid-column: 1 / 3;
+
+    padding-right: 150px !important;
+
+    text-align: justify;
+}
+.o-information > #face {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 140px;
+    height: 140px;
+}
+
+.o-variables {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    height: 100%;
+    gap: 5px;
+}
+.o-variables > div {
+    background: #999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.o-source:not(.running) {
+    pointer-events: none !important;
+}
+.o-source:not(.running) > .o-topbar {
+    transform: translateY(calc(-100% - 10px));
+}
+.o-source:not(.running) > .o-code {
+    transform: translateX(calc(-100% - 10px));
+}
+.o-source:not(.running) > .o-slots {
+    transform: translateX(calc(100% + 10px));
+}
+.o-source:not(.running) > .o-information {
+    transform: translateY(calc(100% + 10px));
+}
+
+.o-mute-button {
+    background-image: url(../textures/sound.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.o-mute-button.muted {
+    background-image: url(../textures/nosound.png);
+}
+
+.o-main-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    transition: opacity 1s, filter 1s, top 1s, transform 1s;
+}
+.o-main-menu.running {
+    opacity: 0;
+    filter: blur(10px);
+    pointer-events: none !important;
+    top: -50%;
+    transform: translate(-50%, 50%);
+}
+
+.o-title {
+    font-size: 10vmin;
+    font-weight: bolder;
+    color: white;
+    text-shadow: 0 1px 0 #999,
+               0 2px 0 #888,
+               0 3px 0 #777,
+               0 4px 0 #666,
+               0 5px 0 #555,
+               0 6px 1px #0003,
+               0 0 5px #0003,
+               0 1px 3px #0004,
+               0 3px 5px #0005,
+               0 5px 10px #0005,
+               0 10px 10px #0006,
+               0 20px 20px #0006;
+    margin-bottom: 50px;
+
+    animation: a-title 5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+}
+
+.o-main-menu button {
+    box-shadow: 0px 0px 4px 4px #0008;
+}
+
+@keyframes a-title {
+    from, to {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5vmin);
+    }
+}
+
+.o-menu-buttons {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: repeat(3, 120px);
+    grid-auto-rows: 120px;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.o-tutorial-button {
+    min-width: 300px;
+    font-size: 20px;
+    padding: 10px 20px;
+}
+.o-start-button {
+    background-image: url(../textures/play.png);
+    background-size: contain;
+}
+.o-achievement-button {
+    background-image: url(../textures/trophy.png);
+    background-size: contain;
+}
+
+.o-achievements {
+    height: 340px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 640px;
+    grid-auto-rows: 110px;
+    gap: 5px;
+    margin: 10px;
+    padding: 5px;
+    background: #444;
+}
+.o-achievement-div {
+    width: 185px;
+    height: 100px;
+
+    position: relative;
+    padding: 5px 5px 5px 110px;
+    background: #888;
+    overflow: hidden;
+    text-align: left;
+}
+.o-achievement-div > img {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 100px;
+}
+
+.o-achievement-title {
+    font-weight: bold;
+    font-size: 12px;
+}
+.o-achievement-description {
+    font-size: 11px;
+}
+
+.o-achievement-div.unlocked {
+    background: #8f8;
+}
+.o-achievement-div.golden {
+    background: gold;
+}
+.o-achievement-div.platinum {
+    background: skyblue;
+}
+
+#achievement-popups {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    gap: 5px;
+
+    display: flex;
+    justify-content: end;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+a {
+    color: #66f;
+}
