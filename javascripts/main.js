@@ -117,15 +117,17 @@ function startGame() {
     // [new Operator(10), 1000],
     // [new Operator(0), 1000],
     // [new Variable("P"), 1000],
+    // [new Variable("f"), 1000],
+    // [new Operator(OperatorType.MultVariable, new Slot(2, new Variable("P"), true), new Slot(0, new Operator(OperatorType.Logarithm), true)), 1000],
     // [new Operator(20, new Slot(4, new Constant(2), false)), 1000],
     // [new Operator(20, new Slot(4, new Constant(3), false)), 1000],
-    // [new Operator(20, new Slot(4, new Constant(4), false)), 1000],
     // [new Constant(1), 1000],
     // [new Constant(2), 1000],
     // [new Constant(3), 1000],
     // [new Constant(4), 1000],
     // [new Constant(9), 1000],
     // [new Constant(10), 1000],
+    // [new Constant(308), 1000],
     // [new Constant(100), 1000],
   ]);
   player.choosed_slot = null;
@@ -139,6 +141,7 @@ function startGame() {
   player.code[0].persist = true;
   player.loops = 0;
   player.level = 1;
+
   for (const id in ACHIEVEMENT_CONDITIONS) ACHIEVEMENT_CONDITIONS[id] = true;
   player.tutorials = +player.tutorial;
   if (player.tutorial)
@@ -232,8 +235,7 @@ function splitCode(c, override = true) {
       createComponentPopup('tutorial1', [
         [
           '下一步',
-          () =>
-            createComponentPopup('tutorial2', [['好！', () => finish()]]),
+          () => createComponentPopup('tutorial2', [['好！', () => finish()]]),
         ],
       ]);
     } else if (player.variables.P.gte(player.nextP)) {
@@ -267,10 +269,7 @@ function splitCode(c, override = true) {
         if (player.level >= 10) unlockAchievement(17, 1);
         if (player.level >= 20) unlockAchievement(17, 2);
 
-        message(
-          `恭喜到达无限！回来继续玩耍吧 :)`,
-          2
-        );
+        message(`恭喜到达无限！回来继续玩耍吧 :)`, 2);
         createPopup(
           `<h2>游戏已完成</h2>恭喜你达到了 P = 2<sup>1024</sup> (${format(
             Number.MAX_VALUE
@@ -301,10 +300,7 @@ function splitCode(c, override = true) {
       ACHIEVEMENT_CONDITIONS[6] = false;
 
       if (player.variables.P.eq(0) && player.nextP.gt(1)) {
-        message(
-          `为什么你P停留在零？？？你技术欠佳……`,
-          4
-        );
+        message(`为什么你P停留在零？？？你技术欠佳……`, 4);
         unlockAchievement(13);
       } else if (spam >= 100) {
         message(`...`, 3);
@@ -371,12 +367,7 @@ function splitCode(c, override = true) {
       const c = player.code[i];
       // if (no_insert_p && splitCode(c, false).some(s => s instanceof Operator && s.equals(ex))) no_insert_p = false;
       if (check(c)) {
-        message(
-          `在代码第 ${
-            i + 1
-          } 行发现错误！请修复错误，然后重新运行。`,
-          1
-        );
+        message(`在代码第 ${i + 1} 行发现错误！请修复错误，然后重新运行。`, 1);
         return;
       }
     }

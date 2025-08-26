@@ -1,0 +1,52 @@
+.ben-settings-button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  background-size: 1.5em;
+  background-position: left;
+  background-repeat: no-repeat;
+}
+
+.ben-settings input[type='checkbox']::before {
+  display: inline-block;
+  content: '';
+  width: 1em;
+  height: 1em;
+  border-radius: 1px;
+  border: 1px solid #ccc;
+  transition: 0.15s background-color;
+  margin-right: 0.5em;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.ben-settings label {
+  cursor: pointer;
+}
+
+.ben-settings label:hover input[type='checkbox']:before {
+  background-color: #eee;
+}
+
+.ben-left {
+  text-align: initial;
+}
+
+.ben-settings input[type='checkbox']:checked:before {
+  background-color: #66f;
+  background-image: url('./checked.svg');
+  background-size: 1em;
+}
+
+.ben-settings label:hover input[type='checkbox']:checked:before {
+  background-color: #55e;
+}
+
+.ben-information {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  text-shadow: 1px 1px 1px white;
+  opacity: 0.4;
+}

@@ -1,0 +1,18 @@
+<svg
+  viewBox="0 0 100 100"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  width="16"
+  height="16"
+  class="icon"
+>
+  <path
+    d="M15,50L50,85L85,15"
+    class="icon-line"
+    ref="iconRef"
+    fill="none"
+    stroke="#fff"
+    stroke-width="10"
+    stroke-linecap="round"
+  ></path>
+</svg>

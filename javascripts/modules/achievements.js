@@ -14,9 +14,9 @@ const ACHIEVEMENTS = [
         ],
     },{
         type: 0,
-        title: `传奇奖励！`,
+        title: `史诗奖励！`,
         description: [
-            `获得一次传奇奖励。`,
+            `获得一次史诗或传奇的奖励。`,
         ],
     },{
         type: 0,

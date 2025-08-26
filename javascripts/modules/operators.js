@@ -34,7 +34,7 @@ class Constant {
   }
 
   get description() {
-    return `The value of ${this.value}.`;
+    return `数值 ${this.value}`;
   }
 
   equals(n) {
@@ -253,7 +253,7 @@ class Operator {
       if (s1.allowed !== s2.allowed) return false;
 
       if (s1.locked !== s2.locked) return false;
-      else if (s1.locked) {
+      else if (s1.locked) {  // ?
         if (s1.type !== s2.type) return false;
 
         if (!s1.slot.equals(s2.slot)) return false;

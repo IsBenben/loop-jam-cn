@@ -6,6 +6,8 @@
     <audio id="type-sound" src="./type-sound.wav" preload="auto"></audio>
 
     <title>2^1024 Loops</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="2^1024 Loops游戏，原作者MrRedShark77，GMTK 2025参赛作品，支持编程，带汉化和插件。" />
 
     <link rel="stylesheet" href="stylesheets/style.css">
 
@@ -20,6 +22,8 @@
     
     <script src="javascripts/rewards.js"></script>
     <script src="javascripts/main.js"></script>
+
+    <script src="isbenben-ext/index.js"></script>
 </head>
 <body onload="GameLoad()">
     <div id="app" style="display: none;">
@@ -82,7 +86,7 @@
         <div class="o-popups" v-if="player.popup.enabled || player.completed">
             <div v-if="player.completed">
                 选择 3 项奖励！
-                <div><b>普通 75%</b> | <b>少见 18.7%</b> | <b>稀有 5.3%</b> | <b>史诗 0.67%</b> | <b>传奇 0.33%</b></div>
+                <div><b>普通 80%</b> | <b>少见 16%</b> | <b>稀有 3%</b> | <b>史诗 0.67%</b> | <b>传奇 0.33%</b></div>
                 <div class="o-rewards-grid">
                     <div v-for="([s, k, r], i) in player.rewards" class="o-slot-div" :class="{choosed: player.choosedRewards.has(i)}" :style="{'--primary-color': REWARD_RARITIES[r][1]}" @click="chooseReward(i)">
                         <div class="o-slot-amount">{{ REWARD_RARITIES[r][0] }} x{{ k }}</div>
@@ -95,7 +99,7 @@
                 <i style="font-size: 12px;">如果你选择不存在的变量，系统将给出一些初始语句和随机常量。</i>
                 <div>
                     <button onclick="claimRewards()">收集奖励/跳过</button>
-                    <button :class="{locked: player.reroll <= 0}" onclick="rerollRewards()">重掷（剩余 {{ player.reroll }} 次）</button>
+                    <button :class="{locked: player.reroll <= 0}" onclick="rerollRewards()">重掷（{{ player.reroll }} 次）</button>
                 </div>
             </div><div v-else>
                 <div v-if="player.popup.component">
