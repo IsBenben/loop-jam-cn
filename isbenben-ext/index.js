@@ -12,23 +12,10 @@
     styleFixes: true,
     infinityReroll: false,
     infinityBlocks: false,
-    sortInventory: false,
+    sortInventory: true,
     ...player[dir],
   };
 
-  function slotLt(a, b) {
-    if (a.sType === SlotType.Constant) {
-      if (b.sType !== SlotType.Constant) {
-        return true;
-      }
-      return a.value < b.value;
-    }
-    if (b.sType === SlotType.OPERATOR) {
-      if (a.sType === SlotType.Variable) {
-      }
-    }
-    return false;
-  }
   function toInt(a) {
     // console.log(a.sType);
     if (a.sType === SlotType.Constant) {
@@ -128,7 +115,7 @@
 
   const oldCalculateRewards = window.calculateRewards;
   window.calculateRewards = function (count = 6) {
-    if (!player.allLegend) {
+    if (!player.deprecatedAlgorithm) {
       return oldCalculateRewards(count);
     }
     const rewards = [];

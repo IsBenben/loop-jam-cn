@@ -120,14 +120,14 @@ const OperatorHTMLs = {
 };
 
 const OperatorDescriptions = {
-  [OperatorType.SetVariable]: `将指定值或语句赋给变量。`,
-  [OperatorType.AddVariable]: `用指定值或语句累加变量。`,
-  [OperatorType.MultVariable]: `用指定值或语句累乘变量。`,
+  [OperatorType.SetVariable]: `将指定语句、变量或常量赋给变量。`,
+  [OperatorType.AddVariable]: `用指定语句、变量或常量累加变量。`,
+  [OperatorType.MultVariable]: `用指定语句、变量或常量累乘变量。`,
 
-  [OperatorType.Sum]: `求两个值或语句的和。`,
-  [OperatorType.Product]: `求两个值或语句的积。`,
-  [OperatorType.Exponent]: `求两个值或语句的幂。`,
-  [OperatorType.Logarithm]: `求值或语句的自然对数。`,
+  [OperatorType.Sum]: `求两个语句、变量或常量的和。`,
+  [OperatorType.Product]: `求两个语句、变量或常量的积。`,
+  [OperatorType.Exponent]: `求两个语句、变量或常量的幂。`,
+  [OperatorType.Logarithm]: `求语句、变量或常量的自然对数。`,
 
   [OperatorType.Repeat]: `重复执行多次内部语句块。`,
 };
@@ -353,7 +353,7 @@ const CustomOperatorDescriptions = new Map([
       null,
       new Slot(0, new Constant(2), true)
     ),
-    `求值或语句的平方。`,
+    `求语句、变量或常量的平方。`,
   ],
   [
     new Operator(
@@ -361,7 +361,7 @@ const CustomOperatorDescriptions = new Map([
       null,
       new Slot(0, new Constant(3), true)
     ),
-    `求值或语句的立方。`,
+    `求语句、变量或常量的立方。`,
   ],
   [
     new Operator(
@@ -378,7 +378,7 @@ const CustomOperatorDescriptions = new Map([
     ),
     `${
       OperatorDescriptions[OperatorType.Exponent]
-    }指数相当于值或语句的自然对数。<i>[ln(ln(5+1)+1) > 1]</i>`,
+    }指数相当于语句、变量或常量的自然对数。<i>[ln(ln(5+1)+1) > 1]</i>`,
   ],
 ]);
 function findDescription(c) {

@@ -10,5 +10,6 @@
         "choosed", // correct spell: chose
         "isbenben", // my github name :)
         "Mult" // Multiply
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }

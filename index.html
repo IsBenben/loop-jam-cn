@@ -6,7 +6,7 @@
     <audio id="type-sound" src="./type-sound.wav" preload="auto"></audio>
 
     <title>2^1024 Loops</title>
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta name="description" content="2^1024 Loops游戏，原作者MrRedShark77，GMTK 2025参赛作品，支持编程，带汉化和插件。" />
 
     <link rel="stylesheet" href="stylesheets/style.css">
@@ -123,9 +123,9 @@
                     </div><div v-if="player.popup.component === 'about'">
                         <h2>关于</h2>
                         <div>基于 MrRedShark77 的 <a href="https://github.com/MrRedShark77/loop-jam">loop-jam 仓库</a>改编（有能力请支持原作者）</div>
-                        <div>汉化制作不易，<a href="https://space.bilibili.com/3493138995874499">支持作者</a>。汉化文本按 CC BY-NC-SA 4.0 授权，<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">协议文本</a></div>
+                        <div><b>汉化制作不易</b> | <a href="https://space.bilibili.com/3493138995874499">支持作者</a> | <a href="https://github.com/IsBenben/loop-jam-cn">汉化源代码</a> | <a href="https://isbenben.github.io/pages/loop-jam-cn.html">游戏说明</a></div>
                         <hr>
-                        <div><b>鸣谢列表</b> | Lodash.js (<a href="https://github.com/lodash/lodash/blob/main/LICENSE">License</a>) | Vue.js (<a href="https://github.com/vuejs/vue/blob/main/LICENSE">License</a>) | Noto Sans SC (<a href="https://github.com/notofonts/noto-fonts/blob/main/LICENSE">License</a>) | Google Sans Code (<a href="https://github.com/googlefonts/googlesans-code/blob/main/OFL.txte">License</a>) | Roboto Mono (<a href="https://github.com/googlefonts/RobotoMono/blob/main/OFL.txt">License</a>)</div>
+                        <div><b>鸣谢列表</b> | Lodash.js (<a href="https://github.com/lodash/lodash/blob/main/LICENSE">License</a>) | Vue.js (<a href="https://github.com/vuejs/vue/blob/main/LICENSE">License</a>) | Noto Sans SC (<a href="https://github.com/notofonts/noto-fonts/blob/main/LICENSE">License</a>) | Google Sans Code (<a href="https://github.com/googlefonts/googlesans-code/blob/main/OFL.txt">License</a>) | Roboto Mono (<a href="https://github.com/googlefonts/RobotoMono/blob/main/OFL.txt">License</a>) | break_eternity.js (<a href="https://github.com/Patashu/break_eternity.js/blob/master/LICENSE">License</a>)</div>
                     </div>
                 </div><div v-else v-html="player.popup.msg"></div>
                 <div style="margin-top: 10px;"><button v-for="([b],i) in player.popup.buttons" v-html="b" @click="actionPopup(i)"></button></div>
