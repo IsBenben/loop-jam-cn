@@ -73,7 +73,7 @@
         <div class="o-main-menu" :class="{running: player.playing}" :style="{'pointer-events': player.popup.enabled || player.completed ? 'none' : 'all'}">
             <div class="o-title">
                 <div>2<sup>1024</sup> Loops</div>
-                <div style="font-size: 2vmin;">原作者 MrRedShark77 - GMTK 2025 参赛作品 <button onclick="createComponentPopup('about')">关于</button></div>
+                <div style="font-size: 2vmin;">原作者 MrRedShark77 - GMTK 2025 参赛作品 <a href="https://isbenben.github.io/pages/loop-jam.html"><button>关于</button></a></div>
             </div>
             <div class="o-menu-buttons">
                 <button class="o-mute-button" :class="{muted: player.mute}" onclick="player.mute = !player.mute"></button>
@@ -120,12 +120,6 @@
                         这是“存储”按钮，用于切换存储模式，你可以在其中选择操作符进行存储！<i>这个功能仍在开发中，请自行承担使用风险。</i>
                         <img src="textures/help2.png">
                         <div>对于每个目标，当你完成后，都可以从6项奖励中选择3项，并且各等级的奖励有不同的概率。别担心，教程的奖励在关闭这个窗口后就会出现！你需要达到 P = 2<sup>1024</sup> (1.798x10<sup>308</sup>)，并完成成就。祝你好运！</div>
-                    </div><div v-if="player.popup.component === 'about'">
-                        <h2>关于</h2>
-                        <div>基于 MrRedShark77 的 <a href="https://github.com/MrRedShark77/loop-jam">loop-jam 仓库</a>改编（有能力请支持原作者）</div>
-                        <div><b>汉化制作不易</b> | <a href="https://space.bilibili.com/3493138995874499">支持作者</a> | <a href="https://github.com/IsBenben/loop-jam-cn">汉化源代码</a> | <a href="https://isbenben.github.io/pages/loop-jam-cn.html">游戏说明</a></div>
-                        <hr>
-                        <div><b>鸣谢列表</b> | Lodash.js (<a href="https://github.com/lodash/lodash/blob/main/LICENSE">License</a>) | Vue.js (<a href="https://github.com/vuejs/vue/blob/main/LICENSE">License</a>) | Noto Sans SC (<a href="https://github.com/notofonts/noto-fonts/blob/main/LICENSE">License</a>) | Google Sans Code (<a href="https://github.com/googlefonts/googlesans-code/blob/main/OFL.txt">License</a>) | Roboto Mono (<a href="https://github.com/googlefonts/RobotoMono/blob/main/OFL.txt">License</a>) | break_eternity.js (<a href="https://github.com/Patashu/break_eternity.js/blob/master/LICENSE">License</a>)</div>
                     </div>
                 </div><div v-else v-html="player.popup.msg"></div>
                 <div style="margin-top: 10px;"><button v-for="([b],i) in player.popup.buttons" v-html="b" @click="actionPopup(i)"></button></div>
