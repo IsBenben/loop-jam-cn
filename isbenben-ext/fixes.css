@@ -41,16 +41,12 @@ button:not(.locked, :active) {
   max-height: calc(100% - 50px);
 }
 
-.ben-modal {
-  display: none;
-}
-
 .o-popups ~ div .ben-modal {
   display: block;
   position: fixed;
   inset: 0;
-  width: 1000vw; /* ? */
-  height: 1000vh;
+  width: 100vw;
+  height: 100vh;
   background-color: #4444;
   backdrop-filter: blur(15px);
 }
@@ -92,8 +88,32 @@ button:not(.locked, :active) {
 }
 
 .o-mute-button {
-  background-image: url(sound.svg);
+  background-image: url(sound.svg) !important;
 }
 .o-mute-button.muted {
-  background-image: url(nosound.svg);
+  background-image: url(nosound.svg) !important;
+}
+
+@keyframes open1 {
+  from {
+    transform: scaleX(0) translateY(-50%);
+  }
+  to {
+    transform: scaleX(1) translateY(-50%);
+  }
+}
+.o-code-remove {
+  animation: open1 0.2s forwards;
+}
+
+@keyframes open2 {
+  from {
+    transform: scaleX(0) translateY(50%);
+  }
+  to {
+    transform: scaleX(1) translateY(50%);
+  }
+}
+.o-code-insert {
+  animation: open2 0.2s forwards;
 }

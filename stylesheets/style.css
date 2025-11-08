@@ -618,3 +618,8 @@ button:not(.locked, :active):hover {
 a {
   color: #66f;
 }
+
+
+a:hover {
+  color: #33f;
+}
